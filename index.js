@@ -65,7 +65,7 @@ app.get('/api/:collection/:name', function(req,res) {
     const collection = req.params.collection;
     const name = req.params.name;
 
-    if(collection =='Cat');
+    if(collection =='Cats');
     var query = Cat.find({'name':name });
     query.select('name');
     //query.limit(1);
@@ -77,10 +77,17 @@ app.get('/api/:collection/:name', function(req,res) {
 
 });
 
+app.post('/api/:collection/:name', function(req, res) {
+    const collection = req.params.collection;
+    const name = req.params.name;
 
+    if(collection =='Cats');
+    var cat = new Cat({name: name});
+    cat.save(function(err,res){
+        if (err) console.error(err);
+    });
 
-
-
+});
 
 
 // Port
@@ -88,42 +95,3 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Listening on port ${port}...`);
 });
-
-// const courses = [
-//     {'id':1, 'name': 'course1'},
-//     {'id':2, 'name': 'course2'},
-//     {'id':3, 'name': 'course3'},
-// ];
-
-
-// // replace with Mongoose crud operations.
-
-// app.get('/api/courses', (req, res) => {
-//     //request from db
-//     res.send(courses);
-// });
-
-// app.get('/api/courses/:id', (req, res) => {
-//     const course = courses.find(c => c['id'] === Number.parseInt(req.params.id));
-//     if(!course) return res.status(404).send('The course with the given ID was not found.');// 404
-//     console.log(course);
-//     res.send(course);
-//     //res.send(courses[req.params.id]);
-// });
-
-// app.put('/api/courses/:id', (req, res) => {
-//     const course = courses.find(c => c['id'] === Number.parseInt(req.params.id));
-//     if(!course) return res.status(404).send('The course with the given ID was not found.');// 404
-    
-//     courses.course = req.body;
-//     res.send(req.body);
-    
-// });
-
-// app.post('/api/courses/', (req, res) => {
-//     courses.push(req.body);
-//     res.send(req.body);
-
-// });
-
-
