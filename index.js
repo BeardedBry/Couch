@@ -5,7 +5,7 @@ const app = express();
 const mongoose = require('mongoose');
 
 
-mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true});
+mongoose.connect('mongodb://127.0.0.1:27017/testdb', {useNewUrlParser: true});
 var db = mongoose.connection;
 
 var catSchema = new mongoose.Schema({
@@ -65,27 +65,33 @@ app.get('/api/:collection/:name', function(req,res) {
     const collection = req.params.collection;
     const name = req.params.name;
 
+    console.log(req.query);
+
     if(collection =='Cats');
     var query = Cat.find({'name':name });
     query.select('name');
-    //query.limit(1);
+    query.limit(1);
     //query.sort({name: -1});
+    if(req.query.name){
+        query.updateOne({name: req.query.name});
+    }
     query.exec( function(err, cat){
         if(err) return console.log('error: ' + err);
         res.send(cat);
     });
-
 });
+
 
 app.post('/api/:collection/:name', function(req, res) {
     const collection = req.params.collection;
     const name = req.params.name;
-
+    console.log('Attempting POST')
     if(collection =='Cats');
-    var cat = new Cat({name: name});
+    var cat = new Cat({'name': name});
     cat.save(function(err,res){
         if (err) console.error(err);
-    });
+    }).then((()=>console.log('Meow (new object ' + name + ' saved.)')));
+    res.send(200);
 
 });
 
